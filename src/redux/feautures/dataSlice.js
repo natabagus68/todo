@@ -30,16 +30,26 @@ export const dataSlice = createSlice({
         batal: (state, action) => {
             let x = state.done.filter(e => e.id === action.payload)
             let arr = x[0]
-              state.data.push({...arr, status:1})  
+              state.data.push({...arr, status:0})  
             let u = state.done.filter(e => e.id !== action.payload)
               state.done = u
               
 
         },
         updateData: (state, action) => {
-            let i = state.data.findIndex(e =>{return e.id === action.payload.id})
+            if(action.payload.status === 0){
+                let i = state.data.findIndex(e =>{return e.id === action.payload.id})
             
-            state.data[i] = action.payload
+                state.data[i] = action.payload
+            }else {
+                let x = state.data.findIndex(e =>{return e.id === action.payload.id})
+                state.data[x] = action.payload
+                let y = state.data.filter(e => e.id === action.payload.id)
+                state.done.push(y[0])
+                let m = state.data.filter(e => e.id !== action.payload.id)
+                state.data = m
+            }
+          
             
         },
         deleteData: (state, action) => {
@@ -50,8 +60,8 @@ export const dataSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(getData.fulfilled, (state, action) => {
-               let pData = action.payload.filter(e => e.status === 1)
-               let pDone = action.payload.filter(e => e.status === 0)
+               let pDone = action.payload.filter(e => e.status === 1)
+               let pData = action.payload.filter(e => e.status === 0)
             state.data = pData
             state.done = pDone
         })

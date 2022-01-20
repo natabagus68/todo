@@ -15,7 +15,7 @@ const DoneTodo = () => {
   
     <div class="card" style={{width:'30rem'}}>
     <div class="card-header">
-      Featured
+      todo done
     </div>
     <table class="table">
       <tbody>

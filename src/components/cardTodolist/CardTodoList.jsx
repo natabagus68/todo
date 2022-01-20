@@ -7,6 +7,7 @@ const CardTodoList = () => {
    const [curentId, setCurentId] = useState()
    const [title, setTitle] = useState()
    const [description, setDescription] = useState()
+   const [status, setStatus] = useState()
 
 
   const select = useSelector(state => state.data.data);
@@ -20,7 +21,7 @@ const CardTodoList = () => {
   const handleDone = (id) => {
     let filt = select.filter(e => e.id === id)
     let x = filt[0]
-    dispatch(addDone({...x, status:0}))
+    dispatch(addDone({...x, status:1}))
   }
 
 const handleDetail = (id) => {
@@ -43,7 +44,7 @@ const handleEdit = (id) => {
 const handleUpdate = (e) => {
   e.preventDefault()
   console.log(curentId);
- dispatch(updateData({id:curentId, title:title, description:description, status:1, createdAt:new Date()}))
+ dispatch(updateData({id:curentId, title:title, description:description, status:1, createdAt:new Date(), status:parseInt(status,10)}))
  setOnEdit(false)
 }
 
@@ -51,7 +52,7 @@ const handleUpdate = (e) => {
   <>
     <div className="card" style={{width:'30rem'}}>
       <div className="card-header">
-        Featured
+        todo list
       </div>
     <table className="table">
       <tbody>
@@ -91,9 +92,9 @@ const handleUpdate = (e) => {
       <div className="modal-body">
        {detail? 
        <>
-       <p>{detail.title}</p>
-       <p>{detail.description}</p>
-       <p>{detail.status}</p>
+       <p>Title: {detail.title}</p>
+       <p>Des: {detail.description}</p>
+       <p>Status: {detail.status}</p>
        </>
        : false}
 
@@ -101,7 +102,11 @@ const handleUpdate = (e) => {
        {onEdit? 
        <>
        <form onSubmit={handleUpdate}>
+         
+         <input type="number" onChange={(event) => setStatus(event.target.value)} placeholder="Status" className="mb-2"/>
+         
          <input type="text" className="form-control mb-2" value={title} onChange={(event) => setTitle(event.target.value)}/>
+       
          <input type="text"  className="form-control mb-2"  value={description} onChange={(event) => setDescription(event.target.value)}/>
          <button type="submit" className="btn btn-warning" data-bs-dismiss="modal">Update!</button>
        </form>
